@@ -37,9 +37,32 @@ public class Draw
 
     public void AddStation(object source, ElapsedEventArgs e)
     {
-        
         Random rng = new Random();
-        Station station = new Station(rng.Next(100,700), rng.Next(100,380));
+
+        int stationXPosition = rng.Next(100,700);
+        int stationYPosition = rng.Next(100,380);
+
+        int stationXCoverArea1 = stationXPosition - 50;
+        int stationXCoverArea2 = stationXPosition + 50;
+
+        int stationYCoverArea1 = stationYPosition - 50;
+        int stationYCoverArea2 = stationYPosition + 50;
+
+        foreach (Station currentStation in StationList)
+        {
+            if (stationXPosition <= currentStation.StationXCoverArea1 & stationXPosition >= currentStation.StationXCoverArea2)
+            {
+                
+            }
+
+            if (stationYPosition <= currentStation.StationYCoverArea1 & stationYPosition >= currentStation.StationYCoverArea2)
+            {
+                
+            }
+        }
+
+
+        Station station = new Station(stationXPosition, stationYPosition, stationXCoverArea1, stationXCoverArea2, stationYCoverArea1, stationYCoverArea2);
 
         StationList.Add(station);
     }
