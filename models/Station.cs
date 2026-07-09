@@ -17,6 +17,7 @@ public class Station
 
     public Color StationColor;
     
+    public Station(){}
 
     public Station(int stationXPosition, int stationYPosition, int stationXCoverArea1, int stationXCoverArea2, int stationYCoverArea1, int stationYCoverArea2)
     {
