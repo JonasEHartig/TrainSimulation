@@ -8,7 +8,7 @@ namespace challenge;
 public class Draw
 {
     public List<Station> StationList = new List<Station>();
-    System.Timers.Timer sec3Timer = new System.Timers.Timer();
+    bool mapFull = false;
 
     public void initialDraw()
     {
@@ -19,7 +19,7 @@ public class Draw
 
         while (!Raylib.WindowShouldClose())
         {
-            if (Raylib.GetTime() - lastSpawn >= 0.5)
+            if (Raylib.GetTime() - lastSpawn >= 0.5 & !mapFull)
             {
                 AddStation();
                 lastSpawn = Raylib.GetTime();
@@ -51,6 +51,8 @@ public class Draw
         int stationXCoverArea2; 
         int stationYCoverArea1; 
         int stationYCoverArea2;
+
+        int stationTries = 0;
         bool stationLocationValidBool = false;
 
         if (!StationList.Any())
@@ -63,7 +65,16 @@ public class Draw
 
         do
         {
-            (stationXPosition, stationYPosition, stationXCoverArea1, stationXCoverArea2, stationYCoverArea1, stationYCoverArea2, stationLocationValidBool) = CalculateStationPlacement();
+            stationTries++;
+            if (stationTries < 50)
+            {
+                (stationXPosition, stationYPosition, stationXCoverArea1, stationXCoverArea2, stationYCoverArea1, stationYCoverArea2, stationLocationValidBool) = CalculateStationPlacement();
+            }
+            else
+            {
+                mapFull = true;
+                return;
+            }
         } while (!stationLocationValidBool);
 
         Station station = new Station (stationXPosition, stationYPosition, stationXCoverArea1, stationXCoverArea2, stationYCoverArea1, stationYCoverArea2);
@@ -80,26 +91,24 @@ public class Draw
 
         int stationXPosition = rng.Next(100,700);
         int stationYPosition = rng.Next(100,380);
-
-        int stationXCoverArea1 = stationXPosition - 50;
-        int stationXCoverArea2 = stationXPosition + 50;
-
-        int stationYCoverArea1 = stationYPosition - 50;
-        int stationYCoverArea2 = stationYPosition + 50;
+        int stationXCoverArea1 = stationXPosition - 100;
+        int stationXCoverArea2 = stationXPosition + 100;
+        int stationYCoverArea1 = stationYPosition - 100;
+        int stationYCoverArea2 = stationYPosition + 100;
 
         bool stationLocationValidBool = true;
 
-            foreach (Station currentStation in StationList)
+        foreach (Station currentStation in StationList)
+        {
+            if (stationXPosition >= currentStation.StationXCoverArea1 & 
+            stationXPosition <= currentStation.StationXCoverArea2 & 
+            stationYPosition >= currentStation.StationYCoverArea1 & 
+            stationYPosition <= currentStation.StationYCoverArea2)
             {
-                if (stationXPosition >= currentStation.StationXCoverArea1 & 
-                stationXPosition <= currentStation.StationXCoverArea2 & 
-                stationYPosition >= currentStation.StationYCoverArea1 & 
-                stationYPosition <= currentStation.StationYCoverArea2)
-                {
-                    stationLocationValidBool = false;
-                    break;
-                }
+                stationLocationValidBool = false;
+                break;
             }
+        }
 
         return Tuple.Create(stationXPosition, stationYPosition, stationXCoverArea1, stationXCoverArea2, stationYCoverArea1, stationYCoverArea2, stationLocationValidBool);
     }
