@@ -5,7 +5,8 @@ namespace challenge;
 
 public class Train
 {
-    
+
+    public List<Passenger> passengers;
 
     public Train()
     {

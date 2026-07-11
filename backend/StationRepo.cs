@@ -8,6 +8,8 @@ public class StationRepo
 
     public void AddStation()
     {
+        int stationLocationTries = 0;
+
         int stationXPosition;
         int stationYPosition;
         int stationXCoverArea1; 
@@ -15,21 +17,17 @@ public class StationRepo
         int stationYCoverArea1; 
         int stationYCoverArea2;
 
-        int stationTries = 0;
-        bool stationLocationValidBool = false;
+        int stationNameTries = 0;
 
-        if (!StationList.Any())
-        {
-            (stationXPosition, stationYPosition, stationXCoverArea1, stationXCoverArea2, stationYCoverArea1, stationYCoverArea2, stationLocationValidBool) = CalculateStationPlacement();
-            Station firstStation = new Station(stationXPosition, stationYPosition, stationXCoverArea1, stationXCoverArea2, stationYCoverArea1, stationYCoverArea2);
-            StationList.Add(firstStation);
-            return;
-        }
+        StationName? stationName;
+
+        bool stationLocationValidBool = false;
+        bool stationNameValid = false;
 
         do
         {
-            stationTries++;
-            if (stationTries < 50)
+            stationLocationTries++;
+            if (stationLocationTries < 50)
             {
                 (stationXPosition, stationYPosition, stationXCoverArea1, stationXCoverArea2, stationYCoverArea1, stationYCoverArea2, stationLocationValidBool) = CalculateStationPlacement();
             }
@@ -38,10 +36,26 @@ public class StationRepo
                 mapFull = true;
                 return;
             }
-            
+
         } while (!stationLocationValidBool);
 
-        Station station = new Station (stationXPosition, stationYPosition, stationXCoverArea1, stationXCoverArea2, stationYCoverArea1, stationYCoverArea2);
+        do
+        {
+            stationNameTries++;
+            if (stationNameTries < 50)
+            {
+                (stationName, stationNameValid) = GetSationName();
+            }
+            else
+            {
+                mapFull = true;
+                return;
+            }
+        } while (!stationNameValid);
+
+
+        Station station = new Station
+        (stationXPosition, stationYPosition, stationXCoverArea1, stationXCoverArea2, stationYCoverArea1, stationYCoverArea2, stationName);
 
         if (stationLocationValidBool)
         {
@@ -75,5 +89,22 @@ public class StationRepo
         }
 
         return Tuple.Create(stationXPosition, stationYPosition, stationXCoverArea1, stationXCoverArea2, stationYCoverArea1, stationYCoverArea2, stationLocationValidBool);
+    }
+
+    public Tuple<StationName?, bool> GetSationName()
+    {   
+        Random rng = new Random();
+        int stationNameEnum = rng.Next(1,10);
+        bool stationNameValid = true;
+
+        foreach(Station currentStation in StationList)
+        {
+            if (currentStation.StationName == (StationName)stationNameEnum)
+            {
+                stationNameValid = false;
+                break;
+            }
+        }
+        return Tuple.Create((StationName?)stationNameEnum, stationNameValid);
     }
 }

@@ -40,6 +40,8 @@ public class Draw
                 //int RectangleHeight = currentStation.StationYCoverArea2 - currentStation.StationYCoverArea1;
                 //Raylib.DrawRectangleGradientV(currentStation.StationXCoverArea1, currentStation.StationYCoverArea1, RectangleWidth, RectangleHeight, Color.Red, Color.DarkGray);
                 Raylib.DrawCircle(currentStation.StationXPosition, currentStation.StationYPosition, 10, Color.Blue);
+                string stationName = currentStation.StationName.ToString();
+                Raylib.DrawText(stationName, currentStation.StationXPosition, currentStation.StationYPosition - 10, 20, Color.White);
 
             }
 
