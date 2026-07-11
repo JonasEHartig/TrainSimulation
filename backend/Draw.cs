@@ -36,8 +36,8 @@ public class Draw
 
             foreach (Station currentStation in stationRepo.StationList)
             {
-                int RectangleWidth = currentStation.StationXCoverArea2 - currentStation.StationXCoverArea1;
-                int RectangleHeight = currentStation.StationYCoverArea2 - currentStation.StationYCoverArea1;
+                //int RectangleWidth = currentStation.StationXCoverArea2 - currentStation.StationXCoverArea1;
+                //int RectangleHeight = currentStation.StationYCoverArea2 - currentStation.StationYCoverArea1;
                 //Raylib.DrawRectangleGradientV(currentStation.StationXCoverArea1, currentStation.StationYCoverArea1, RectangleWidth, RectangleHeight, Color.Red, Color.DarkGray);
                 Raylib.DrawCircle(currentStation.StationXPosition, currentStation.StationYPosition, 10, Color.Blue);
 
@@ -47,7 +47,5 @@ public class Draw
         }
 
         Raylib.CloseWindow();
-    }
-
-    
+    }    
 }

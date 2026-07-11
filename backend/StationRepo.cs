@@ -4,7 +4,6 @@ public class StationRepo
 {
 
     public List<Station> StationList = new List<Station>();
-
     public bool mapFull { get; private set; }= false;
 
     public void AddStation()
@@ -39,6 +38,7 @@ public class StationRepo
                 mapFull = true;
                 return;
             }
+            
         } while (!stationLocationValidBool);
 
         Station station = new Station (stationXPosition, stationYPosition, stationXCoverArea1, stationXCoverArea2, stationYCoverArea1, stationYCoverArea2);

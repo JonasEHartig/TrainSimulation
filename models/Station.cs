@@ -5,7 +5,6 @@ namespace challenge;
 
 public class Station
 {
-
     public StationName StationName;
     public int StationXPosition;
     public int StationYPosition;
@@ -32,15 +31,15 @@ public class Station
 
 public enum StationName
 {
-    København,
-    Roskilde,
-    Odense,
-    Kolding,
-    Esbjerg,
-    Vejle,
-    Horsens,
-    Aarhus,
-    Randers,
-    Skjern,
-    Aalborg
+    København = 1,
+    Roskilde = 2,
+    Odense = 3,
+    Kolding = 4,
+    Esbjerg = 5,
+    Vejle = 6,
+    Aalborg = 7,
+    Aarhus = 8,
+    Randers = 9,
+    Skjern = 10,
+    
 }
