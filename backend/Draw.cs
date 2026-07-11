@@ -14,17 +14,24 @@ public class Draw
     {
         Raylib.InitWindow(800, 480, "Train Simulation");
         
-    
         double lastSpawn = 0;
 
         while (!Raylib.WindowShouldClose())
         {
-            if (Raylib.GetTime() - lastSpawn >= 0.5 & !mapFull)
-            {
-                AddStation();
-                lastSpawn = Raylib.GetTime();
-            }
             Raylib.BeginDrawing();
+            
+            if (!mapFull)
+            {
+                if (Raylib.GetTime() - lastSpawn >= 0.5)
+                {
+                    AddStation();
+                    lastSpawn = Raylib.GetTime();
+                }
+            }
+            else
+            {            
+                Raylib.DrawText("Map is full", 12, 34, 20, Color.White);
+            }
 
             Raylib.DrawText("Train Simulation", 12, 12, 20, Color.White);
 
@@ -32,7 +39,7 @@ public class Draw
             {
                 int RectangleWidth = currentStation.StationXCoverArea2 - currentStation.StationXCoverArea1;
                 int RectangleHeight = currentStation.StationYCoverArea2 - currentStation.StationYCoverArea1;
-                Raylib.DrawRectangleGradientV(currentStation.StationXCoverArea1, currentStation.StationYCoverArea1, RectangleWidth, RectangleHeight, Color.Red, Color.DarkGray);
+                //Raylib.DrawRectangleGradientV(currentStation.StationXCoverArea1, currentStation.StationYCoverArea1, RectangleWidth, RectangleHeight, Color.Red, Color.DarkGray);
                 Raylib.DrawCircle(currentStation.StationXPosition, currentStation.StationYPosition, 10, Color.Blue);
 
             }
