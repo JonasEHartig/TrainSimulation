@@ -43,3 +43,4 @@ C:\Repos\Visual Studio\TrainSimulation\obj\Debug\net9.0\refint\challenge.dll
 C:\Repos\Visual Studio\TrainSimulation\obj\Debug\net9.0\challenge.pdb
 C:\Repos\Visual Studio\TrainSimulation\obj\Debug\net9.0\challenge.genruntimeconfig.cache
 C:\Repos\Visual Studio\TrainSimulation\obj\Debug\net9.0\ref\challenge.dll
+C:\Repos\Visual Studio\TrainSimulation\bin\Debug\net9.0\textures\trainsimbackground.png

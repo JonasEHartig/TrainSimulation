@@ -2,22 +2,26 @@ using System;
 using System.Security.Cryptography.X509Certificates;
 using System.Timers;
 using Raylib_cs;
-
 namespace challenge;
 
 public class Draw
 {
-    public StationRepo stationRepo { get; }= new StationRepo();
+    public StationRepo stationRepo { get; } = new StationRepo();
    
     public void initialDraw()
     {
         Raylib.InitWindow(800, 480, "Train Simulation");
+        
+        Texture2D background = Raylib.LoadTexture("textures/trainsimbackground.png");
+        Raylib.SetTargetFPS(30);
         
         double lastSpawn = 0;
 
         while (!Raylib.WindowShouldClose())
         {
             Raylib.BeginDrawing();
+            Raylib.ClearBackground(Color.Black);
+            Raylib.DrawTexture(background, 0, 0, Color.White);
 
             if (!stationRepo.mapFull)
             {
