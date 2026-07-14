@@ -5,7 +5,7 @@ public class StationRepo
 
     public List<Station> StationList = new List<Station>();
     public bool mapFull { get; private set; }= false;
-
+    private readonly Random rng = new();
     public void AddStation()
     {
 
@@ -72,8 +72,6 @@ public class StationRepo
 
     public Tuple<StationPlacement, bool> CalculateStationPlacement()
     {
-        Random rng = new Random();
-
         int X = rng.Next(100,700);
         int Y = rng.Next(100,380);
 
@@ -91,9 +89,9 @@ public class StationRepo
 
         foreach (Station currentStation in StationList)
         {
-            if (X >= currentStation.XCoverArea1 & 
-            X <= currentStation.XCoverArea2 & 
-            Y >= currentStation.YCoverArea1 & 
+            if (X >= currentStation.XCoverArea1 && 
+            X <= currentStation.XCoverArea2 && 
+            Y >= currentStation.YCoverArea1 && 
             Y <= currentStation.YCoverArea2)
             {
                 stationLocationValidBool = false;
@@ -122,7 +120,6 @@ public class StationRepo
 
     public Tuple<StationName?, bool> GetSationName()
     {   
-        Random rng = new Random();
         int stationNameEnum = rng.Next(1,10);
         bool stationNameValid = true;
 
