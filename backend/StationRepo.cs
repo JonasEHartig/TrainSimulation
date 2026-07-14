@@ -8,20 +8,15 @@ public class StationRepo
 
     public void AddStation()
     {
+
+        StationPlacement stationPlacement;
+
         int stationLocationTries = 0;
-
-        int stationXPosition;
-        int stationYPosition;
-        int stationXCoverArea1; 
-        int stationXCoverArea2; 
-        int stationYCoverArea1; 
-        int stationYCoverArea2;
-
-        int stationNameTries = 0;
+        bool stationLocationValidBool = false;
 
         StationName? stationName;
 
-        bool stationLocationValidBool = false;
+        int stationNameTries = 0;
         bool stationNameValid = false;
 
         do
@@ -29,7 +24,7 @@ public class StationRepo
             stationLocationTries++;
             if (stationLocationTries < 50)
             {
-                (stationXPosition, stationYPosition, stationXCoverArea1, stationXCoverArea2, stationYCoverArea1, stationYCoverArea2, stationLocationValidBool) = CalculateStationPlacement();
+                (stationPlacement, stationLocationValidBool) = CalculateStationPlacement();
             }
             else
             {
@@ -55,40 +50,74 @@ public class StationRepo
 
 
         Station station = new Station
-        (stationXPosition, stationYPosition, stationXCoverArea1, stationXCoverArea2, stationYCoverArea1, stationYCoverArea2, stationName);
+        (
+            stationPlacement.X, 
+            stationPlacement.Y, 
 
-        if (stationLocationValidBool)
-        {
-            StationList.Add(station);
-        }
+            stationPlacement.XCoverArea1, 
+            stationPlacement.XCoverArea2, 
+            stationPlacement.YCoverArea1, 
+            stationPlacement.YCoverArea2, 
+            
+            stationName, 
+
+            stationPlacement.InteractXCoverArea1, 
+            stationPlacement.InteractXCoverArea2, 
+            stationPlacement.InteractYCoverArea1, 
+            stationPlacement.InteractYCoverArea2
+        );
+
+        StationList.Add(station);
     }
 
-    public Tuple<int, int, int, int, int, int, bool> CalculateStationPlacement()
+    public Tuple<StationPlacement, bool> CalculateStationPlacement()
     {
         Random rng = new Random();
 
-        int stationXPosition = rng.Next(100,700);
-        int stationYPosition = rng.Next(100,380);
-        int stationXCoverArea1 = stationXPosition - 100;
-        int stationXCoverArea2 = stationXPosition + 100;
-        int stationYCoverArea1 = stationYPosition - 100;
-        int stationYCoverArea2 = stationYPosition + 100;
+        int X = rng.Next(100,700);
+        int Y = rng.Next(100,380);
+
+        int XCoverArea1 = X - 100;
+        int XCoverArea2 = X + 100;
+        int YCoverArea1 = Y - 100;
+        int YCoverArea2 = Y + 100;
+        
+        int InteractXCoverArea1 = X - 15;
+        int InteractXCoverArea2 = X + 15;
+        int InteractYCoverArea1 = Y - 5;
+        int InteractYCoverArea2 = Y + 5;
 
         bool stationLocationValidBool = true;
 
         foreach (Station currentStation in StationList)
         {
-            if (stationXPosition >= currentStation.StationXCoverArea1 & 
-            stationXPosition <= currentStation.StationXCoverArea2 & 
-            stationYPosition >= currentStation.StationYCoverArea1 & 
-            stationYPosition <= currentStation.StationYCoverArea2)
+            if (X >= currentStation.XCoverArea1 & 
+            X <= currentStation.XCoverArea2 & 
+            Y >= currentStation.YCoverArea1 & 
+            Y <= currentStation.YCoverArea2)
             {
                 stationLocationValidBool = false;
                 break;
             }
         }
 
-        return Tuple.Create(stationXPosition, stationYPosition, stationXCoverArea1, stationXCoverArea2, stationYCoverArea1, stationYCoverArea2, stationLocationValidBool);
+        StationPlacement stationPlacement = new StationPlacement
+        (
+            X,
+            Y,
+
+            XCoverArea1, 
+            XCoverArea2, 
+            YCoverArea1, 
+            YCoverArea2, 
+            
+            InteractXCoverArea1, 
+            InteractXCoverArea2, 
+            InteractYCoverArea1, 
+            InteractYCoverArea2
+        ); 
+
+        return Tuple.Create(stationPlacement, stationLocationValidBool);
     }
 
     public Tuple<StationName?, bool> GetSationName()
@@ -99,7 +128,7 @@ public class StationRepo
 
         foreach(Station currentStation in StationList)
         {
-            if (currentStation.StationName == (StationName)stationNameEnum)
+            if (currentStation.Name == (StationName)stationNameEnum)
             {
                 stationNameValid = false;
                 break;

@@ -12,7 +12,7 @@ public class Draw
     {
         Raylib.InitWindow(800, 480, "Train Simulation");
         
-        Texture2D background = Raylib.LoadTexture("textures/trainsimbackground.png");
+        //Texture2D background = Raylib.LoadTexture("textures/trainsimbackground.png");
         Raylib.SetTargetFPS(30);
         
         double lastSpawn = 0;
@@ -21,7 +21,7 @@ public class Draw
         {
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Color.Black);
-            Raylib.DrawTexture(background, 0, 0, Color.White);
+            //Raylib.DrawTexture(background, 0, 0, Color.White);
 
             if (!stationRepo.mapFull)
             {
@@ -38,14 +38,16 @@ public class Draw
 
             Raylib.DrawText("Train Simulation", 12, 12, 20, Color.White);
 
+            
+
             foreach (Station currentStation in stationRepo.StationList)
             {
                 //int RectangleWidth = currentStation.StationXCoverArea2 - currentStation.StationXCoverArea1;
                 //int RectangleHeight = currentStation.StationYCoverArea2 - currentStation.StationYCoverArea1;
                 //Raylib.DrawRectangleGradientV(currentStation.StationXCoverArea1, currentStation.StationYCoverArea1, RectangleWidth, RectangleHeight, Color.Red, Color.DarkGray);
-                Raylib.DrawCircle(currentStation.StationXPosition, currentStation.StationYPosition, 10, Color.Blue);
-                string stationName = currentStation.StationName.ToString();
-                Raylib.DrawText(stationName, currentStation.StationXPosition, currentStation.StationYPosition - 10, 20, Color.White);
+                Raylib.DrawCircle(currentStation.X, currentStation.Y, 10, Color.Blue);
+                string stationName = currentStation.Name.ToString();
+                Raylib.DrawText(stationName, currentStation.X, currentStation.Y - 10, 20, Color.White);
 
             }
 
