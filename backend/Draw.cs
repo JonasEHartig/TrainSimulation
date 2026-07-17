@@ -13,6 +13,8 @@ public class Draw
     {
         Raylib.InitWindow(800, 480, "Train Simulation");
         List<Station> interactedStations = new List<Station>();
+        Station lastInteractedStation = null;
+
 
         
         //Texture2D background = Raylib.LoadTexture("textures/trainsimbackground.png");
@@ -41,9 +43,6 @@ public class Draw
                 Raylib.DrawText("Map is full", 12, 34, 20, Color.White);
             }
 
-            Station lastInteractedStation = null;
-
-            
             foreach(Station currentInteractedStation in interactedStations)
             {
                 Raylib.DrawCircle(currentInteractedStation.StationPlacement.X, currentInteractedStation.StationPlacement.Y, 14, Color.Maroon);
@@ -55,8 +54,6 @@ public class Draw
                 {
                     if(Raylib.IsMouseButtonDown(MouseButton.Left) && currentStation != lastInteractedStation)
                     {
-                        Raylib.DrawCircle(currentStation.StationPlacement.X, currentStation.StationPlacement.Y, 14, Color.Red);
-
                         if (!interactedStations.Contains(currentStation))
                         {
                             interactedStations.Add(currentStation);
@@ -71,6 +68,7 @@ public class Draw
                 else if (!Raylib.IsMouseButtonDown(MouseButton.Left))
                 {
                     interactedStations.Clear();
+                    lastInteractedStation = null;
                 }
                 
                 if (currentStation == lastInteractedStation)
