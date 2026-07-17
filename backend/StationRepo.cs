@@ -51,20 +51,8 @@ public class StationRepo
 
         Station station = new Station
         (
-            stationPlacement.X, 
-            stationPlacement.Y, 
-
-            stationPlacement.XCoverArea1, 
-            stationPlacement.XCoverArea2, 
-            stationPlacement.YCoverArea1, 
-            stationPlacement.YCoverArea2, 
-            
-            stationName, 
-
-            stationPlacement.InteractXCoverArea1, 
-            stationPlacement.InteractXCoverArea2, 
-            stationPlacement.InteractYCoverArea1, 
-            stationPlacement.InteractYCoverArea2
+            stationPlacement,
+            stationName
         );
 
         StationList.Add(station);
@@ -80,19 +68,19 @@ public class StationRepo
         int YCoverArea1 = Y - 100;
         int YCoverArea2 = Y + 100;
         
-        int InteractXCoverArea1 = X - 15;
-        int InteractXCoverArea2 = X + 15;
-        int InteractYCoverArea1 = Y - 5;
-        int InteractYCoverArea2 = Y + 5;
+        int InteractXCoverArea1 = X - 12;
+        int InteractXCoverArea2 = X + 12;
+        int InteractYCoverArea1 = Y - 10;
+        int InteractYCoverArea2 = Y + 10;
 
         bool stationLocationValidBool = true;
 
         foreach (Station currentStation in StationList)
         {
-            if (X >= currentStation.XCoverArea1 && 
-            X <= currentStation.XCoverArea2 && 
-            Y >= currentStation.YCoverArea1 && 
-            Y <= currentStation.YCoverArea2)
+            if (X >= currentStation.StationPlacement.XCoverArea1 && 
+            X <= currentStation.StationPlacement.XCoverArea2 && 
+            Y >= currentStation.StationPlacement.YCoverArea1 && 
+            Y <= currentStation.StationPlacement.YCoverArea2)
             {
                 stationLocationValidBool = false;
                 break;

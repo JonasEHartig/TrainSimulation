@@ -42,13 +42,14 @@ public class Draw
 
             foreach (Station currentStation in stationRepo.StationList)
             {
-                //int RectangleWidth = currentStation.StationXCoverArea2 - currentStation.StationXCoverArea1;
-                //int RectangleHeight = currentStation.StationYCoverArea2 - currentStation.StationYCoverArea1;
-                //Raylib.DrawRectangleGradientV(currentStation.StationXCoverArea1, currentStation.StationYCoverArea1, RectangleWidth, RectangleHeight, Color.Red, Color.DarkGray);
-                Raylib.DrawCircle(currentStation.X, currentStation.Y, 10, Color.Blue);
-                string stationName = currentStation.Name.ToString();
-                Raylib.DrawText(stationName, currentStation.X, currentStation.Y - 10, 20, Color.White);
+                int RectangleWidth = currentStation.StationPlacement.InteractXCoverArea2 - currentStation.StationPlacement.InteractXCoverArea1;
+                int RectangleHeight = currentStation.StationPlacement.InteractYCoverArea2 - currentStation.StationPlacement.InteractYCoverArea1;
+                
+                Raylib.DrawRectangleGradientV(currentStation.StationPlacement.InteractXCoverArea1, currentStation.StationPlacement.InteractYCoverArea1, RectangleWidth, RectangleHeight, Color.Red, Color.DarkGray);
 
+                Raylib.DrawCircle(currentStation.StationPlacement.X, currentStation.StationPlacement.Y, 10, Color.Blue);
+                string stationName = currentStation.Name.ToString();
+                Raylib.DrawText(stationName, currentStation.StationPlacement.X, currentStation.StationPlacement.Y - 10, 20, Color.White);
             }
 
             Raylib.EndDrawing();

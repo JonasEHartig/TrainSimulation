@@ -6,59 +6,17 @@ namespace challenge;
 public class Station
 {
     public StationName? Name;
-    public List<Passenger> passengers;
-
-    public int X;
-    public int Y;
-
-    public int XCoverArea1;
-    public int XCoverArea2;
-    public int YCoverArea1;
-    public int YCoverArea2;
-
-    public int InteractXCoverArea1;
-    public int InteractXCoverArea2;
-    public int InteractYCoverArea1;
-    public int InteractYCoverArea2;
-
-
+    public List<Passenger> Passengers;
+   public StationPlacement StationPlacement;
     public Color StationColor;
     
-    public Station(){}
+    public Station (){}
 
-    public Station
-        (
-        int x, 
-        int y, 
-
-        int xCoverArea1, 
-        int xCoverArea2, 
-        int yCoverArea1, 
-        int yCoverArea2, 
-
-        StationName? name,
-
-        int interactXCoverArea1, 
-        int interactXCoverArea2, 
-        int interactYCoverArea1, 
-        int interactYCoverArea2 
-        )
-        {
-            X = x;
-            Y = y;
-
-            XCoverArea1 = xCoverArea1;
-            XCoverArea2 = xCoverArea2;
-            YCoverArea1 = yCoverArea1;
-            YCoverArea2 = yCoverArea2;
-
-            Name = name;
-
-            InteractXCoverArea1 = interactXCoverArea1;
-            InteractXCoverArea2 = interactXCoverArea2;
-            InteractYCoverArea1 = interactYCoverArea1;
-            InteractYCoverArea2 = interactYCoverArea2;
-        }
+    public Station (StationPlacement stationPlacement, StationName? name)
+    {
+        Name = name;
+        StationPlacement = stationPlacement;
+    }
 }
 
 public class StationPlacement
