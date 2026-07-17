@@ -7,7 +7,7 @@ public class Station
 {
     public StationName? Name;
     public List<Passenger> Passengers;
-   public StationPlacement StationPlacement;
+    public StationPlacement StationPlacement;
     public Color StationColor;
     
     public Station (){}
@@ -24,6 +24,8 @@ public class StationPlacement
     public int X;
     public int Y;
 
+
+    
     public int XCoverArea1;
     public int XCoverArea2;
     public int YCoverArea1;

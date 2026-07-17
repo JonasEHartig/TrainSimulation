@@ -2,7 +2,6 @@ namespace challenge;
 
 public class StationRepo
 {
-
     public List<Station> StationList = new List<Station>();
     public bool mapFull { get; private set; }= false;
     private readonly Random rng = new();
@@ -10,12 +9,10 @@ public class StationRepo
     {
 
         StationPlacement stationPlacement;
-
         int stationLocationTries = 0;
         bool stationLocationValidBool = false;
 
         StationName? stationName;
-
         int stationNameTries = 0;
         bool stationNameValid = false;
 
@@ -63,15 +60,7 @@ public class StationRepo
         int X = rng.Next(100,700);
         int Y = rng.Next(100,380);
 
-        int XCoverArea1 = X - 100;
-        int XCoverArea2 = X + 100;
-        int YCoverArea1 = Y - 100;
-        int YCoverArea2 = Y + 100;
-        
-        int InteractXCoverArea1 = X - 12;
-        int InteractXCoverArea2 = X + 12;
-        int InteractYCoverArea1 = Y - 10;
-        int InteractYCoverArea2 = Y + 10;
+
 
         bool stationLocationValidBool = true;
 
@@ -86,6 +75,16 @@ public class StationRepo
                 break;
             }
         }
+
+        int XCoverArea1 = X - 100;
+        int XCoverArea2 = X + 100;
+        int YCoverArea1 = Y - 100;
+        int YCoverArea2 = Y + 100;
+        
+        int InteractXCoverArea1 = X - 12;
+        int InteractXCoverArea2 = X + 12;
+        int InteractYCoverArea1 = Y - 10;
+        int InteractYCoverArea2 = Y + 10;
 
         StationPlacement stationPlacement = new StationPlacement
         (

@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 using System.Timers;
 using Raylib_cs;
@@ -21,7 +22,9 @@ public class Draw
         {
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Color.Black);
-            //Raylib.DrawTexture(background, 0, 0, Color.White);
+            Raylib.DrawText("Train Simulation", 12, 12, 20, Color.White);
+
+            Vector2 mousePosition = Raylib.GetMousePosition();
 
             if (!stationRepo.mapFull)
             {
@@ -35,17 +38,16 @@ public class Draw
             {            
                 Raylib.DrawText("Map is full", 12, 34, 20, Color.White);
             }
-
-            Raylib.DrawText("Train Simulation", 12, 12, 20, Color.White);
-
             
-
             foreach (Station currentStation in stationRepo.StationList)
             {
-                int RectangleWidth = currentStation.StationPlacement.InteractXCoverArea2 - currentStation.StationPlacement.InteractXCoverArea1;
-                int RectangleHeight = currentStation.StationPlacement.InteractYCoverArea2 - currentStation.StationPlacement.InteractYCoverArea1;
-                
-                Raylib.DrawRectangleGradientV(currentStation.StationPlacement.InteractXCoverArea1, currentStation.StationPlacement.InteractYCoverArea1, RectangleWidth, RectangleHeight, Color.Red, Color.DarkGray);
+                if  (mousePosition.X >= currentStation.StationPlacement.InteractXCoverArea1 &&
+                mousePosition.X <= currentStation.StationPlacement.InteractXCoverArea2 && 
+                mousePosition.Y >= currentStation.StationPlacement.InteractYCoverArea1 && 
+                mousePosition.Y <= currentStation.StationPlacement.InteractYCoverArea2)
+                {
+                    Raylib.DrawCircle(currentStation.StationPlacement.X, currentStation.StationPlacement.Y, 13, Color.SkyBlue);
+                }
 
                 Raylib.DrawCircle(currentStation.StationPlacement.X, currentStation.StationPlacement.Y, 10, Color.Blue);
                 string stationName = currentStation.Name.ToString();
@@ -58,3 +60,9 @@ public class Draw
         Raylib.CloseWindow();
     }    
 }
+/*
+                int RectangleWidth = currentStation.StationPlacement.InteractXCoverArea2 - currentStation.StationPlacement.InteractXCoverArea1;
+                int RectangleHeight = currentStation.StationPlacement.InteractYCoverArea2 - currentStation.StationPlacement.InteractYCoverArea1;
+                
+                Raylib.DrawRectangleGradientV(currentStation.StationPlacement.InteractXCoverArea1, currentStation.StationPlacement.InteractYCoverArea1, RectangleWidth, RectangleHeight, Color.Red, Color.DarkGray);
+*/
