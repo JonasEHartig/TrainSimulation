@@ -1,3 +1,5 @@
+using System.Numerics;
+
 namespace challenge;
 
 public class StationRepo
@@ -119,5 +121,20 @@ public class StationRepo
             }
         }
         return Tuple.Create((StationName?)stationNameEnum, stationNameValid);
+    }
+
+    public bool CollisionCheck(Station currentStation, Vector2 mousePosition)
+    {
+        if (mousePosition.X >= currentStation.StationPlacement.InteractXCoverArea1 &&
+            mousePosition.X <= currentStation.StationPlacement.InteractXCoverArea2 && 
+            mousePosition.Y >= currentStation.StationPlacement.InteractYCoverArea1 && 
+            mousePosition.Y <= currentStation.StationPlacement.InteractYCoverArea2)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

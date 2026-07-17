@@ -12,6 +12,8 @@ public class Draw
     public void initialDraw()
     {
         Raylib.InitWindow(800, 480, "Train Simulation");
+        List<Station> interactedStations = new List<Station>();
+
         
         //Texture2D background = Raylib.LoadTexture("textures/trainsimbackground.png");
         Raylib.SetTargetFPS(30);
@@ -38,17 +40,43 @@ public class Draw
             {            
                 Raylib.DrawText("Map is full", 12, 34, 20, Color.White);
             }
+
+            Station lastInteractedStation = null;
+
             
+            foreach(Station currentInteractedStation in interactedStations)
+            {
+                Raylib.DrawCircle(currentInteractedStation.StationPlacement.X, currentInteractedStation.StationPlacement.Y, 14, Color.Maroon);
+            }
+
             foreach (Station currentStation in stationRepo.StationList)
             {
-                if  (mousePosition.X >= currentStation.StationPlacement.InteractXCoverArea1 &&
-                mousePosition.X <= currentStation.StationPlacement.InteractXCoverArea2 && 
-                mousePosition.Y >= currentStation.StationPlacement.InteractYCoverArea1 && 
-                mousePosition.Y <= currentStation.StationPlacement.InteractYCoverArea2)
+                if  (stationRepo.CollisionCheck(currentStation, mousePosition))
                 {
-                    Raylib.DrawCircle(currentStation.StationPlacement.X, currentStation.StationPlacement.Y, 13, Color.SkyBlue);
-                }
+                    if(Raylib.IsMouseButtonDown(MouseButton.Left) && currentStation != lastInteractedStation)
+                    {
+                        Raylib.DrawCircle(currentStation.StationPlacement.X, currentStation.StationPlacement.Y, 14, Color.Red);
 
+                        if (!interactedStations.Contains(currentStation))
+                        {
+                            interactedStations.Add(currentStation);
+                            lastInteractedStation = currentStation;
+                        }
+                    } 
+                    else if (!Raylib.IsMouseButtonDown(MouseButton.Left))
+                    {
+                        Raylib.DrawCircle(currentStation.StationPlacement.X, currentStation.StationPlacement.Y, 13, Color.SkyBlue);
+                    }
+                }
+                else if (!Raylib.IsMouseButtonDown(MouseButton.Left))
+                {
+                    interactedStations.Clear();
+                }
+                
+                if (currentStation == lastInteractedStation)
+                {
+                    Raylib.DrawCircle(currentStation.StationPlacement.X, currentStation.StationPlacement.Y, 14, Color.Green);
+                }
                 Raylib.DrawCircle(currentStation.StationPlacement.X, currentStation.StationPlacement.Y, 10, Color.Blue);
                 string stationName = currentStation.Name.ToString();
                 Raylib.DrawText(stationName, currentStation.StationPlacement.X, currentStation.StationPlacement.Y - 10, 20, Color.White);
@@ -61,8 +89,8 @@ public class Draw
     }    
 }
 /*
-                int RectangleWidth = currentStation.StationPlacement.InteractXCoverArea2 - currentStation.StationPlacement.InteractXCoverArea1;
-                int RectangleHeight = currentStation.StationPlacement.InteractYCoverArea2 - currentStation.StationPlacement.InteractYCoverArea1;
-                
-                Raylib.DrawRectangleGradientV(currentStation.StationPlacement.InteractXCoverArea1, currentStation.StationPlacement.InteractYCoverArea1, RectangleWidth, RectangleHeight, Color.Red, Color.DarkGray);
+int RectangleWidth = currentStation.StationPlacement.InteractXCoverArea2 - currentStation.StationPlacement.InteractXCoverArea1;
+int RectangleHeight = currentStation.StationPlacement.InteractYCoverArea2 - currentStation.StationPlacement.InteractYCoverArea1;
+
+Raylib.DrawRectangleGradientV(currentStation.StationPlacement.InteractXCoverArea1, currentStation.StationPlacement.InteractYCoverArea1, RectangleWidth, RectangleHeight, Color.Red, Color.DarkGray);
 */
