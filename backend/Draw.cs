@@ -15,8 +15,6 @@ public class Draw
         List<Station> interactedStations = new List<Station>();
         Station lastInteractedStation = null;
 
-
-        
         //Texture2D background = Raylib.LoadTexture("textures/trainsimbackground.png");
         Raylib.SetTargetFPS(30);
         
@@ -43,9 +41,14 @@ public class Draw
                 Raylib.DrawText("Map is full", 12, 34, 20, Color.White);
             }
 
+
             foreach(Station currentInteractedStation in interactedStations)
             {
+                int interactedStationsAmount = interactedStations.Count - 1;
+
                 Raylib.DrawCircle(currentInteractedStation.StationPlacement.X, currentInteractedStation.StationPlacement.Y, 14, Color.Maroon);
+                Raylib.DrawLineEx(currentInteractedStation.StationPlacement.Position, interactedStations[interactedStationsAmount].StationPlacement.Position, 20.0f, Color.Gray);
+
             }
 
             foreach (Station currentStation in stationRepo.StationList)
@@ -54,6 +57,7 @@ public class Draw
                 {
                     if(Raylib.IsMouseButtonDown(MouseButton.Left) && currentStation != lastInteractedStation)
                     {
+                        
                         if (!interactedStations.Contains(currentStation))
                         {
                             interactedStations.Add(currentStation);
@@ -74,7 +78,9 @@ public class Draw
                 if (currentStation == lastInteractedStation)
                 {
                     Raylib.DrawCircle(currentStation.StationPlacement.X, currentStation.StationPlacement.Y, 14, Color.Green);
+                    Raylib.DrawLineEx(currentStation.StationPlacement.Position, mousePosition, 20.0f, Color.Gray);
                 }
+
                 Raylib.DrawCircle(currentStation.StationPlacement.X, currentStation.StationPlacement.Y, 10, Color.Blue);
                 string stationName = currentStation.Name.ToString();
                 Raylib.DrawText(stationName, currentStation.StationPlacement.X, currentStation.StationPlacement.Y - 10, 20, Color.White);

@@ -1,5 +1,9 @@
 using System;
 using Raylib_cs;
+using System;
+using System.Numerics;
+using System.Security.Cryptography.X509Certificates;
+using System.Timers;
 
 namespace challenge; 
 
@@ -24,8 +28,6 @@ public class StationPlacement
     public int X;
     public int Y;
 
-
-    
     public int XCoverArea1;
     public int XCoverArea2;
     public int YCoverArea1;
@@ -65,6 +67,8 @@ public class StationPlacement
             InteractYCoverArea1 = interactYCoverArea1;
             InteractYCoverArea2 = interactYCoverArea2;
         }
+
+        public Vector2 Position => new Vector2(X, Y);
 }
 
 public enum StationName
