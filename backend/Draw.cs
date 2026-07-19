@@ -8,13 +8,11 @@ namespace challenge;
 public class Draw
 {
     public StationRepo stationRepo { get; } = new StationRepo();
+    public RailRepo railRepo { get; } = new RailRepo();
    
     public void initialDraw()
     {
         Raylib.InitWindow(800, 480, "Train Simulation");
-        List<Station> interactedStations = new List<Station>();
-        Station lastInteractedStation = null;
-
         //Texture2D background = Raylib.LoadTexture("textures/trainsimbackground.png");
         Raylib.SetTargetFPS(30);
         
@@ -25,6 +23,12 @@ public class Draw
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Color.Black);
             Raylib.DrawText("Train Simulation", 12, 12, 20, Color.White);
+
+
+            Raylib.DrawCircle(30, 75, 14, new Color(92, 16, 22, 255));
+            Raylib.DrawCircle(65, 75, 14, new Color(0, 91, 19, 255));
+            Raylib.DrawCircle(100, 75, 14, new Color(101, 100, 0, 255));
+            Raylib.DrawCircle(135, 75, 14, new Color(0, 48, 96, 255));
 
             Vector2 mousePosition = Raylib.GetMousePosition();
 
@@ -41,27 +45,20 @@ public class Draw
                 Raylib.DrawText("Map is full", 12, 34, 20, Color.White);
             }
 
-
-            foreach(Station currentInteractedStation in interactedStations)
-            {
-                int interactedStationsAmount = interactedStations.Count - 1;
-
-                Raylib.DrawCircle(currentInteractedStation.StationPlacement.X, currentInteractedStation.StationPlacement.Y, 14, Color.Maroon);
-                Raylib.DrawLineEx(currentInteractedStation.StationPlacement.Position, interactedStations[interactedStationsAmount].StationPlacement.Position, 20.0f, Color.Gray);
-
-            }
+            
 
             foreach (Station currentStation in stationRepo.StationList)
             {
                 if  (stationRepo.CollisionCheck(currentStation, mousePosition))
                 {
-                    if(Raylib.IsMouseButtonDown(MouseButton.Left) && currentStation != lastInteractedStation)
+                    if(Raylib.IsMouseButtonDown(MouseButton.Left) && currentStation != stationRepo.lastInteractedStation && railRepo.newRailsAvalible)
                     {
-                        
-                        if (!interactedStations.Contains(currentStation))
+                        if (!stationRepo.interactedStations.Contains(currentStation))
                         {
-                            interactedStations.Add(currentStation);
-                            lastInteractedStation = currentStation;
+                            stationRepo.interactedStations.Add(currentStation);
+                            stationRepo.lastInteractedStation = currentStation;
+
+                            //railRepo.AddRail(currentStation, stationRepo.lastInteractedStation);
                         }
                     } 
                     else if (!Raylib.IsMouseButtonDown(MouseButton.Left))
@@ -71,14 +68,19 @@ public class Draw
                 }
                 else if (!Raylib.IsMouseButtonDown(MouseButton.Left))
                 {
-                    interactedStations.Clear();
-                    lastInteractedStation = null;
+                    stationRepo.interactedStations.Clear();
+                    stationRepo.lastInteractedStation = null;
                 }
                 
-                if (currentStation == lastInteractedStation)
+                if (stationRepo.interactedStations.Contains(currentStation))
                 {
-                    Raylib.DrawCircle(currentStation.StationPlacement.X, currentStation.StationPlacement.Y, 14, Color.Green);
-                    Raylib.DrawLineEx(currentStation.StationPlacement.Position, mousePosition, 20.0f, Color.Gray);
+                    Raylib.DrawCircle(currentStation.StationPlacement.X, currentStation.StationPlacement.Y, 14, Color.Maroon);
+
+                    if (currentStation == stationRepo.lastInteractedStation)
+                    {
+                        Raylib.DrawCircle(currentStation.StationPlacement.X, currentStation.StationPlacement.Y, 14, Color.Green);
+                        Raylib.DrawLineEx(currentStation.StationPlacement.Position, mousePosition, 20.0f, Color.Gray);
+                    }
                 }
 
                 Raylib.DrawCircle(currentStation.StationPlacement.X, currentStation.StationPlacement.Y, 10, Color.Blue);

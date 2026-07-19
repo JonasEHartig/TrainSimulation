@@ -5,6 +5,9 @@ namespace challenge;
 public class StationRepo
 {
     public List<Station> StationList = new List<Station>();
+    public List<Station> interactedStations = new List<Station>();
+    public Station lastInteractedStation = null;
+
     public bool mapFull { get; private set; }= false;
     private readonly Random rng = new();
     public void AddStation()
@@ -61,8 +64,6 @@ public class StationRepo
     {
         int X = rng.Next(100,700);
         int Y = rng.Next(100,380);
-
-
 
         bool stationLocationValidBool = true;
 
