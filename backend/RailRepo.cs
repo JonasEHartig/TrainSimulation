@@ -25,6 +25,8 @@ public class RailRepo
         {
             do
             {
+                lastInteractedStation.StartPoint = true;
+                
                 RailLocationTries++;
                 if (RailLocationTries < 50)
                 {

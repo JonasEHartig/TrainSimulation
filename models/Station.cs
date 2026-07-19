@@ -13,6 +13,10 @@ public class Station
     public List<Passenger> Passengers;
     public StationPlacement StationPlacement;
     public Color StationColor;
+
+    //rigtig tankegang men skal uddybes videre da den ikke kan være global for all rails
+    public bool StartPoint;
+    public bool EndPoint;
     
     public Station (){}
 

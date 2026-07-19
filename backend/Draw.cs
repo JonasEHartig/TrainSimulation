@@ -63,10 +63,9 @@ public class Draw
                 {
                     if(Raylib.IsMouseButtonDown(MouseButton.Left) && currentStation != stationRepo.lastInteractedStation && railRepo.newRailsAvalible)
                     {
-                        //TILFØJE - HVIS DENNE RAIL IKKE HAR ET ENDPOINT MÅ MAN GODT GÅ I GENNEM DEN 2 GANGE 
                         
-                        //if (!stationRepo.interactedStations.Contains(currentStation))
-                        //{
+                        if (!stationRepo.interactedStations.Contains(currentStation))
+                        {
                             stationRepo.interactedStations.Add(currentStation);
                             int listAmount = stationRepo.interactedStations.Count();
 
@@ -77,7 +76,7 @@ public class Draw
                             }     
                             
                             stationRepo.lastInteractedStation = currentStation;
-                        //}
+                        }
                     }
                     else
                     {
@@ -89,6 +88,7 @@ public class Draw
                     stationRepo.interactedStations.Clear();
                     railRepo.newRail = true;
                     stationRepo.lastInteractedStation = null;
+                    currentStation.EndPoint = true;
                 }
                 
                 if (stationRepo.interactedStations.Contains(currentStation) && railRepo.newRailsAvalible)
