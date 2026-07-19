@@ -1,4 +1,4 @@
-using System.Drawing;
+using Raylib_cs;
 using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 
@@ -6,33 +6,49 @@ namespace challenge;
 
 public class RailRepo
 {
+    public List<RailColors?> TakenColors = new List<RailColors?>();
     public List<Rail> RailList = new List<Rail>();
+
+    public bool newRail = true;
+    public RailColors? currentRailColor = null;
     public bool newRailsAvalible = true;
     private readonly Random rng = new();
 
     public void AddRail(Station currentInteractedStation, Station lastInteractedStation)
     {
         RailColors? railColorsEnum;
-        Color? railColor = null;
+        Color railColor = Color.White;
         int RailLocationTries = 0;
         bool railColorVaild = false;
 
-        do
+        if (newRail)
         {
-            RailLocationTries++;
-            if (RailLocationTries < 50)
+            do
             {
-                (railColorsEnum, railColorVaild) = GetUnusedColor();
-            }
-            else
-            {
-                newRailsAvalible = false;
-                return;
-            }
-        } while (!railColorVaild);
+                RailLocationTries++;
+                if (RailLocationTries < 50)
+                {
+                    (railColorsEnum, railColorVaild) = GetUnusedColor();
+                    currentRailColor = railColorsEnum;
+                }
+                else
+                {
+                    newRailsAvalible = false;
+                    return;
+                }
+            } while (!railColorVaild);  
+        }
+        else
+        {
+            railColorsEnum = currentRailColor;
+        }
 
-        GetUnusedColor();
 
+        if(!TakenColors.Contains(railColorsEnum))
+        {
+            TakenColors.Add(railColorsEnum);
+        }
+            
         if (railColorsEnum == RailColors.Blue)
         {
             railColor = Color.Blue;
@@ -52,11 +68,17 @@ public class RailRepo
 
         Rail rail = new Rail(currentInteractedStation, lastInteractedStation, railColorsEnum, railColor);
         RailList.Add(rail);
+
+        int takenColorsAmount = TakenColors.Count();
+        if (takenColorsAmount == 4)
+        {
+            newRailsAvalible = false;
+        }
     }
 
     public Tuple<RailColors?, bool> GetUnusedColor()
     {
-        int railColorEnum = rng.Next(1,4);
+        int railColorEnum = rng.Next(1,5);
         bool railColorValid = true;
 
         foreach(Rail currentRail in RailList)

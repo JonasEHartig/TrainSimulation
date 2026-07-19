@@ -25,11 +25,18 @@ public class Draw
             Raylib.DrawText("Train Simulation", 12, 12, 20, Color.White);
 
 
-            Raylib.DrawCircle(30, 75, 14, new Color(92, 16, 22, 255));
-            Raylib.DrawCircle(65, 75, 14, new Color(0, 91, 19, 255));
-            Raylib.DrawCircle(100, 75, 14, new Color(101, 100, 0, 255));
-            Raylib.DrawCircle(135, 75, 14, new Color(0, 48, 96, 255));
+            // rød
+            if (railRepo.TakenColors.Contains(RailColors.Red)) { Raylib.DrawCircle(30, 90, 14, Color.Red); } else { Raylib.DrawCircle(30, 90, 14, new Color(92, 16, 22, 255)); }
 
+            // grøn
+            if (railRepo.TakenColors.Contains(RailColors.Green)) { Raylib.DrawCircle(65, 90, 14, Color.Green); } else { Raylib.DrawCircle(65, 90, 14, new Color(0, 91, 19, 255)); }
+
+            // gul
+            if (railRepo.TakenColors.Contains(RailColors.Yellow)) { Raylib.DrawCircle(100, 90, 14, Color.Yellow); } else { Raylib.DrawCircle(100, 90, 14, new Color(101, 100, 0, 255)); }
+
+            // blå
+            if (railRepo.TakenColors.Contains(RailColors.Blue)) { Raylib.DrawCircle(135, 90, 14, Color.Blue); } else { Raylib.DrawCircle(135, 90, 14, new Color(0, 48, 96, 255)); }
+            
             Vector2 mousePosition = Raylib.GetMousePosition();
 
             if (!stationRepo.mapFull)
@@ -45,7 +52,10 @@ public class Draw
                 Raylib.DrawText("Map is full", 12, 34, 20, Color.White);
             }
 
-            
+            if (!railRepo.newRailsAvalible)
+            {
+                Raylib.DrawText("Out of rails!", 12, 54, 20, Color.White);
+            }
 
             foreach (Station currentStation in stationRepo.StationList)
             {
@@ -53,15 +63,23 @@ public class Draw
                 {
                     if(Raylib.IsMouseButtonDown(MouseButton.Left) && currentStation != stationRepo.lastInteractedStation && railRepo.newRailsAvalible)
                     {
-                        if (!stationRepo.interactedStations.Contains(currentStation))
-                        {
+                        //TILFØJE - HVIS DENNE RAIL IKKE HAR ET ENDPOINT MÅ MAN GODT GÅ I GENNEM DEN 2 GANGE 
+                        
+                        //if (!stationRepo.interactedStations.Contains(currentStation))
+                        //{
                             stationRepo.interactedStations.Add(currentStation);
-                            stationRepo.lastInteractedStation = currentStation;
+                            int listAmount = stationRepo.interactedStations.Count();
 
-                            //railRepo.AddRail(currentStation, stationRepo.lastInteractedStation);
-                        }
-                    } 
-                    else if (!Raylib.IsMouseButtonDown(MouseButton.Left))
+                            if (listAmount > 1)
+                            {
+                                railRepo.AddRail(currentStation, stationRepo.lastInteractedStation);
+                                railRepo.newRail = false;
+                            }     
+                            
+                            stationRepo.lastInteractedStation = currentStation;
+                        //}
+                    }
+                    else
                     {
                         Raylib.DrawCircle(currentStation.StationPlacement.X, currentStation.StationPlacement.Y, 13, Color.SkyBlue);
                     }
@@ -69,10 +87,11 @@ public class Draw
                 else if (!Raylib.IsMouseButtonDown(MouseButton.Left))
                 {
                     stationRepo.interactedStations.Clear();
+                    railRepo.newRail = true;
                     stationRepo.lastInteractedStation = null;
                 }
                 
-                if (stationRepo.interactedStations.Contains(currentStation))
+                if (stationRepo.interactedStations.Contains(currentStation) && railRepo.newRailsAvalible)
                 {
                     Raylib.DrawCircle(currentStation.StationPlacement.X, currentStation.StationPlacement.Y, 14, Color.Maroon);
 
@@ -81,6 +100,11 @@ public class Draw
                         Raylib.DrawCircle(currentStation.StationPlacement.X, currentStation.StationPlacement.Y, 14, Color.Green);
                         Raylib.DrawLineEx(currentStation.StationPlacement.Position, mousePosition, 20.0f, Color.Gray);
                     }
+                }
+
+                foreach (Rail rail in railRepo.RailList)
+                {
+                    Raylib.DrawLineEx(rail.Destination1.StationPlacement.Position, rail.Destination2.StationPlacement.Position, 15.0f, rail.RailColor);
                 }
 
                 Raylib.DrawCircle(currentStation.StationPlacement.X, currentStation.StationPlacement.Y, 10, Color.Blue);
