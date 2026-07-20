@@ -6,32 +6,74 @@ namespace challenge;
 
 public class RailRepo
 {
-    public List<RailColors?> TakenColors = new List<RailColors?>();
-    public List<Rail> RailList = new List<Rail>();
+    public List<RailColor> TakenColors = new List<RailColor>();
+    public List<RailLine> RailLineList = new List<RailLine>();
 
-    public bool newRail = true;
-    public RailColors? currentRailColor = null;
-    public bool newRailsAvalible = true;
+    public RailLine? currentRailLine = null;
+    public bool canDrawRails = true;
+    public bool nextRailIsNewRail = true;
+
+
     private readonly Random rng = new();
-
+    
     public void AddRail(Station currentInteractedStation, Station lastInteractedStation)
     {
-        RailColors? railColorsEnum;
-        Color railColor = Color.White;
-        int RailLocationTries = 0;
-        bool railColorVaild = false;
-
-        if (newRail)
+        if (nextRailIsNewRail)
         {
-            do
+            foreach (RailLine railLine in RailLineList)
             {
-                lastInteractedStation.StartPoint = true;
-                
+                if (!railLine.IsActive)
+                {
+                    canDrawRails = true;
+                    currentRailLine = railLine;
+                    
+                    railLine.IsActive = true;
+                    railLine.StartPoint = true;
+                    railLine.StartPointStation = lastInteractedStation;
+                    railLine.Rails.Add(new Rail(currentInteractedStation, lastInteractedStation));
+                    if (currentInteractedStation == railLine.EndPointStation)
+                    {
+                        railLine.IsLoop = true;
+                    }
+                    break;
+                }
+            }
+
+            canDrawRails = RailLineList.Any(r => !r.IsActive);
+
+        }
+        else
+        {
+            currentRailLine.Rails.Add(new Rail(currentInteractedStation, lastInteractedStation));
+            //currentRailLine.EndPointStation = lastInteractedStation;
+        }
+
+    }
+
+    public void CreateRailLines()
+    {
+        RailLine railLineRed = new RailLine(new List<Rail>(), RailColor.Red, Color.Red);
+        RailLineList.Add(railLineRed);
+        RailLine railLineGreen = new RailLine(new List<Rail>(), RailColor.Green, Color.Green);
+        RailLineList.Add(railLineGreen);
+        RailLine railLineYellow = new RailLine(new List<Rail>(), RailColor.Yellow, Color.Yellow);
+        RailLineList.Add(railLineYellow);
+        RailLine railLineBlue = new RailLine(new List<Rail>(), RailColor.Blue, Color.Blue);
+        RailLineList.Add(railLineBlue);
+
+        currentRailLine = railLineRed;
+    }
+
+}
+
+/*
+ do
+            {
                 RailLocationTries++;
                 if (RailLocationTries < 50)
                 {
-                    (railColorsEnum, railColorVaild) = GetUnusedColor();
-                    currentRailColor = railColorsEnum;
+                    (railColorEnum, railColorVaild) = GetUnusedColor();
+                    currentRailColor = railColorEnum;
                 }
                 else
                 {
@@ -39,59 +81,5 @@ public class RailRepo
                     return;
                 }
             } while (!railColorVaild);  
-        }
-        else
-        {
-            railColorsEnum = currentRailColor;
-        }
 
-
-        if(!TakenColors.Contains(railColorsEnum))
-        {
-            TakenColors.Add(railColorsEnum);
-        }
-            
-        if (railColorsEnum == RailColors.Blue)
-        {
-            railColor = Color.Blue;
-        }
-        else if (railColorsEnum == RailColors.Green)
-        {
-            railColor = Color.Green;
-        }
-        else if (railColorsEnum == RailColors.Red)
-        {
-            railColor = Color.Red;
-        }
-        else if (railColorsEnum == RailColors.Yellow)
-        {
-            railColor = Color.Yellow;
-        }
-
-        Rail rail = new Rail(currentInteractedStation, lastInteractedStation, railColorsEnum, railColor);
-        RailList.Add(rail);
-
-        int takenColorsAmount = TakenColors.Count();
-        if (takenColorsAmount == 4)
-        {
-            newRailsAvalible = false;
-        }
-    }
-
-    public Tuple<RailColors?, bool> GetUnusedColor()
-    {
-        int railColorEnum = rng.Next(1,5);
-        bool railColorValid = true;
-
-        foreach(Rail currentRail in RailList)
-        {
-            if (currentRail.RailColorsEnum == (RailColors)railColorEnum)
-            {
-                railColorValid = false;
-                break;
-            }
-        }
-
-        return Tuple.Create((RailColors?)railColorEnum, railColorValid);
-    }
-}
+            */

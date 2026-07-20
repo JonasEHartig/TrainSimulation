@@ -15,7 +15,9 @@ public class Draw
         Raylib.InitWindow(800, 480, "Train Simulation");
         //Texture2D background = Raylib.LoadTexture("textures/trainsimbackground.png");
         Raylib.SetTargetFPS(30);
-        
+
+        railRepo.CreateRailLines();
+
         double lastSpawn = 0;
 
         while (!Raylib.WindowShouldClose())
@@ -26,18 +28,19 @@ public class Draw
 
 
             // rød
-            if (railRepo.TakenColors.Contains(RailColors.Red)) { Raylib.DrawCircle(30, 90, 14, Color.Red); } else { Raylib.DrawCircle(30, 90, 14, new Color(92, 16, 22, 255)); }
+            if (railRepo.TakenColors.Contains(RailColor.Red)) { Raylib.DrawCircle(30, 90, 14, Color.Red); } else { Raylib.DrawCircle(30, 90, 14, new Color(92, 16, 22, 255)); }
 
             // grøn
-            if (railRepo.TakenColors.Contains(RailColors.Green)) { Raylib.DrawCircle(65, 90, 14, Color.Green); } else { Raylib.DrawCircle(65, 90, 14, new Color(0, 91, 19, 255)); }
+            if (railRepo.TakenColors.Contains(RailColor.Green)) { Raylib.DrawCircle(65, 90, 14, Color.Green); } else { Raylib.DrawCircle(65, 90, 14, new Color(0, 91, 19, 255)); }
 
             // gul
-            if (railRepo.TakenColors.Contains(RailColors.Yellow)) { Raylib.DrawCircle(100, 90, 14, Color.Yellow); } else { Raylib.DrawCircle(100, 90, 14, new Color(101, 100, 0, 255)); }
+            if (railRepo.TakenColors.Contains(RailColor.Yellow)) { Raylib.DrawCircle(100, 90, 14, Color.Yellow); } else { Raylib.DrawCircle(100, 90, 14, new Color(101, 100, 0, 255)); }
 
             // blå
-            if (railRepo.TakenColors.Contains(RailColors.Blue)) { Raylib.DrawCircle(135, 90, 14, Color.Blue); } else { Raylib.DrawCircle(135, 90, 14, new Color(0, 48, 96, 255)); }
+            if (railRepo.TakenColors.Contains(RailColor.Blue)) { Raylib.DrawCircle(135, 90, 14, Color.Blue); } else { Raylib.DrawCircle(135, 90, 14, new Color(0, 48, 96, 255)); }
             
             Vector2 mousePosition = Raylib.GetMousePosition();
+
 
             if (!stationRepo.mapFull)
             {
@@ -52,7 +55,7 @@ public class Draw
                 Raylib.DrawText("Map is full", 12, 34, 20, Color.White);
             }
 
-            if (!railRepo.newRailsAvalible)
+            if (!railRepo.canDrawRails && railRepo.nextRailIsNewRail)
             {
                 Raylib.DrawText("Out of rails!", 12, 54, 20, Color.White);
             }
@@ -61,9 +64,8 @@ public class Draw
             {
                 if  (stationRepo.CollisionCheck(currentStation, mousePosition))
                 {
-                    if(Raylib.IsMouseButtonDown(MouseButton.Left) && currentStation != stationRepo.lastInteractedStation && railRepo.newRailsAvalible)
+                    if(Raylib.IsMouseButtonDown(MouseButton.Left) && currentStation != stationRepo.lastInteractedStation && (railRepo.canDrawRails || !railRepo.nextRailIsNewRail))
                     {
-                        
                         if (!stationRepo.interactedStations.Contains(currentStation))
                         {
                             stationRepo.interactedStations.Add(currentStation);
@@ -72,7 +74,7 @@ public class Draw
                             if (listAmount > 1)
                             {
                                 railRepo.AddRail(currentStation, stationRepo.lastInteractedStation);
-                                railRepo.newRail = false;
+                                railRepo.nextRailIsNewRail = false;
                             }     
                             
                             stationRepo.lastInteractedStation = currentStation;
@@ -84,14 +86,14 @@ public class Draw
                     }
                 }
                 else if (!Raylib.IsMouseButtonDown(MouseButton.Left))
-                {
-                    stationRepo.interactedStations.Clear();
-                    railRepo.newRail = true;
+                {  
+
                     stationRepo.lastInteractedStation = null;
-                    currentStation.EndPoint = true;
+                    stationRepo.interactedStations.Clear();
+                    railRepo.nextRailIsNewRail = true;
                 }
                 
-                if (stationRepo.interactedStations.Contains(currentStation) && railRepo.newRailsAvalible)
+                if (stationRepo.interactedStations.Contains(currentStation))
                 {
                     Raylib.DrawCircle(currentStation.StationPlacement.X, currentStation.StationPlacement.Y, 14, Color.Maroon);
 
@@ -102,9 +104,12 @@ public class Draw
                     }
                 }
 
-                foreach (Rail rail in railRepo.RailList)
+                foreach (RailLine railLine in railRepo.RailLineList)
                 {
-                    Raylib.DrawLineEx(rail.Destination1.StationPlacement.Position, rail.Destination2.StationPlacement.Position, 15.0f, rail.RailColor);
+                    foreach(Rail rail in railLine.Rails)
+                    {
+                        Raylib.DrawLineEx(rail.Destination1.StationPlacement.Position, rail.Destination2.StationPlacement.Position, 15.0f, railLine.Color);
+                    }
                 }
 
                 Raylib.DrawCircle(currentStation.StationPlacement.X, currentStation.StationPlacement.Y, 10, Color.Blue);
