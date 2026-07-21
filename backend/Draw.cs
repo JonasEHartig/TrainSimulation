@@ -26,21 +26,19 @@ public class Draw
             Raylib.ClearBackground(Color.Black);
             Raylib.DrawText("Train Simulation", 12, 12, 20, Color.White);
 
-
             // rød
-            if (railRepo.TakenColors.Contains(RailColor.Red)) { Raylib.DrawCircle(30, 90, 14, Color.Red); } else { Raylib.DrawCircle(30, 90, 14, new Color(92, 16, 22, 255)); }
+            if (railRepo.RailLineList[0].IsActive) { Raylib.DrawCircle(30, 90, 14, Color.Red); } else { Raylib.DrawCircle(30, 90, 14, new Color(92, 16, 22, 255)); }
 
             // grøn
-            if (railRepo.TakenColors.Contains(RailColor.Green)) { Raylib.DrawCircle(65, 90, 14, Color.Green); } else { Raylib.DrawCircle(65, 90, 14, new Color(0, 91, 19, 255)); }
+            if (railRepo.RailLineList[1].IsActive) { Raylib.DrawCircle(65, 90, 14, Color.Green); } else { Raylib.DrawCircle(65, 90, 14, new Color(0, 91, 19, 255)); }
 
             // gul
-            if (railRepo.TakenColors.Contains(RailColor.Yellow)) { Raylib.DrawCircle(100, 90, 14, Color.Yellow); } else { Raylib.DrawCircle(100, 90, 14, new Color(101, 100, 0, 255)); }
+            if (railRepo.RailLineList[2].IsActive) { Raylib.DrawCircle(100, 90, 14, Color.Yellow); } else { Raylib.DrawCircle(100, 90, 14, new Color(101, 100, 0, 255)); }
 
             // blå
-            if (railRepo.TakenColors.Contains(RailColor.Blue)) { Raylib.DrawCircle(135, 90, 14, Color.Blue); } else { Raylib.DrawCircle(135, 90, 14, new Color(0, 48, 96, 255)); }
+            if (railRepo.RailLineList[3].IsActive) { Raylib.DrawCircle(135, 90, 14, Color.Blue); } else { Raylib.DrawCircle(135, 90, 14, new Color(0, 48, 96, 255)); }
             
             Vector2 mousePosition = Raylib.GetMousePosition();
-
 
             if (!stationRepo.mapFull)
             {
@@ -123,6 +121,7 @@ public class Draw
         Raylib.CloseWindow();
     }    
 }
+
 /*
 int RectangleWidth = currentStation.StationPlacement.InteractXCoverArea2 - currentStation.StationPlacement.InteractXCoverArea1;
 int RectangleHeight = currentStation.StationPlacement.InteractYCoverArea2 - currentStation.StationPlacement.InteractYCoverArea1;
