@@ -39,7 +39,7 @@ public class Draw
             if (railRepo.RailLineList[3].IsActive) { Raylib.DrawCircle(135, 90, 14, Color.Blue); } else { Raylib.DrawCircle(135, 90, 14, new Color(0, 48, 96, 255)); }
             
             Vector2 mousePosition = Raylib.GetMousePosition();
-
+    
             if (!stationRepo.mapFull)
             {
                 if (Raylib.GetTime() - lastSpawn >= 0.5)
@@ -62,7 +62,7 @@ public class Draw
             {
                 if  (stationRepo.CollisionCheck(currentStation, mousePosition))
                 {
-                    if(Raylib.IsMouseButtonDown(MouseButton.Left) && currentStation != stationRepo.lastInteractedStation && (railRepo.canDrawRails || !railRepo.nextRailIsNewRail))
+                    if(Raylib.IsMouseButtonDown(MouseButton.Left) && (currentStation != stationRepo.lastInteractedStation || !railRepo.IsStationStartPointOfCurrentRailLine(currentStation)) && (railRepo.canDrawRails || !railRepo.nextRailIsNewRail))
                     {
                         if (!stationRepo.interactedStations.Contains(currentStation))
                         {

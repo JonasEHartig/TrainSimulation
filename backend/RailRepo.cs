@@ -1,4 +1,5 @@
 using Raylib_cs;
+using System.Diagnostics.Metrics;
 using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 
@@ -6,13 +7,11 @@ namespace challenge;
 
 public class RailRepo
 {
-    public List<RailColor> TakenColors = new List<RailColor>();
     public List<RailLine> RailLineList = new List<RailLine>();
 
     public RailLine? currentRailLine = null;
     public bool canDrawRails = true;
     public bool nextRailIsNewRail = true;
-
 
     private readonly Random rng = new();
     
@@ -31,7 +30,7 @@ public class RailRepo
                     railLine.StartPoint = true;
                     railLine.StartPointStation = lastInteractedStation;
                     railLine.Rails.Add(new Rail(currentInteractedStation, lastInteractedStation));
-                    if (currentInteractedStation == railLine.EndPointStation)
+                    if (currentInteractedStation == railLine.StartPointStation)
                     {
                         railLine.IsLoop = true;
                     }
@@ -62,6 +61,16 @@ public class RailRepo
         RailLineList.Add(railLineBlue);
 
         currentRailLine = railLineRed;
+    }
+
+    public bool IsStationStartPointOfCurrentRailLine(Station currentStation)
+    {
+        if (currentStation == currentRailLine.StartPointStation)
+        {
+            return true;
+        }
+
+        return false;
     }
 
 }
