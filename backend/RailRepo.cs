@@ -12,12 +12,10 @@ public class RailRepo
     public RailLine? currentRailLine = null;
     public bool canDrawRails = true;
     public bool nextRailIsNewRail = true;
-
-    private readonly Random rng = new();
     
-    public void AddRail(Station currentInteractedStation, Station lastInteractedStation)
+    public void TryAddRail(Station currentStation)
     {
-        if (nextRailIsNewRail)
+        if (nextRailIsNewRail) 
         {
             foreach (RailLine railLine in RailLineList)
             {
@@ -25,39 +23,34 @@ public class RailRepo
                 {
                     canDrawRails = true;
                     currentRailLine = railLine;
-                    
-                    railLine.IsActive = true;
-                    railLine.StartPoint = true;
-                    railLine.StartPointStation = lastInteractedStation;
-                    railLine.Rails.Add(new Rail(currentInteractedStation, lastInteractedStation));
-                    if (currentInteractedStation == railLine.StartPointStation)
-                    {
-                        railLine.IsLoop = true;
-                    }
                     break;
                 }
             }
 
-            canDrawRails = RailLineList.Any(r => !r.IsActive);
+            
+            currentRailLine.Stations.Add(currentStation);
 
+            canDrawRails = RailLineList.Any(r => !r.IsActive);
         }
         else
         {
-            currentRailLine.Rails.Add(new Rail(currentInteractedStation, lastInteractedStation));
-            //currentRailLine.EndPointStation = lastInteractedStation;
+            if (currentRailLine.Stations.Contains(currentStation))
+            {
+                return;
+            }
+            currentRailLine.Stations.Add(currentStation);
         }
-
     }
 
     public void CreateRailLines()
     {
-        RailLine railLineRed = new RailLine(new List<Rail>(), RailColor.Red, Color.Red);
+        RailLine railLineRed = new RailLine(new List<Station>(), RailColor.Red, Color.Red);
         RailLineList.Add(railLineRed);
-        RailLine railLineGreen = new RailLine(new List<Rail>(), RailColor.Green, Color.Green);
+        RailLine railLineGreen = new RailLine(new List<Station>(), RailColor.Green, Color.Green);
         RailLineList.Add(railLineGreen);
-        RailLine railLineYellow = new RailLine(new List<Rail>(), RailColor.Yellow, Color.Yellow);
+        RailLine railLineYellow = new RailLine(new List<Station>(), RailColor.Yellow, Color.Yellow);
         RailLineList.Add(railLineYellow);
-        RailLine railLineBlue = new RailLine(new List<Rail>(), RailColor.Blue, Color.Blue);
+        RailLine railLineBlue = new RailLine(new List<Station>(), RailColor.Blue, Color.Blue);
         RailLineList.Add(railLineBlue);
 
         currentRailLine = railLineRed;
@@ -74,21 +67,3 @@ public class RailRepo
     }
 
 }
-
-/*
- do
-            {
-                RailLocationTries++;
-                if (RailLocationTries < 50)
-                {
-                    (railColorEnum, railColorVaild) = GetUnusedColor();
-                    currentRailColor = railColorEnum;
-                }
-                else
-                {
-                    newRailsAvalible = false;
-                    return;
-                }
-            } while (!railColorVaild);  
-
-            */

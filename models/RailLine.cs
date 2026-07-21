@@ -4,28 +4,26 @@ namespace challenge;
 
 public class RailLine
 {
-    public List<Rail> Rails = new List<Rail>();
+    public List<Station> Stations = new List<Station>();
     public Color Color;
     public RailColor RailColor;
 
-    public Station StartPointStation;
-    public bool StartPoint;
-
-    public Station EndPointStation;
-    public bool EndPoint;
-
-    public bool IsLoop;
-
-    public bool IsActive;
-
     public RailLine(){}
 
-    public RailLine(List<Rail> rails ,RailColor railColor, Color color)
+    public RailLine(List<Station> stations ,RailColor railColor, Color color)
     {
-        Rails = rails;
+        Stations = stations;
         RailColor = railColor;
         Color = color;
     }
+
+    public Station? StartPointStation => Stations.Count > 0 ? Stations[0] : null;
+
+    public Station? EndPointStation => Stations.Count > 0 ? Stations[^1] : null;
+
+    public bool IsActive => Stations.Count > 0;
+
+    public bool IsLoop => Stations.Count > 2 && Stations[0] == Stations[^1];
 }
 
 public enum RailColor

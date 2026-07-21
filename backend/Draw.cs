@@ -60,35 +60,22 @@ public class Draw
 
             foreach (Station currentStation in stationRepo.StationList)
             {
-                if  (stationRepo.CollisionCheck(currentStation, mousePosition))
+                if  (stationRepo.CollisionCheck(currentStation, mousePosition) && (railRepo.canDrawRails || railRepo.nextRailIsNewRail))
                 {
-                    if(Raylib.IsMouseButtonDown(MouseButton.Left) && (currentStation != stationRepo.lastInteractedStation || !railRepo.IsStationStartPointOfCurrentRailLine(currentStation)) && (railRepo.canDrawRails || !railRepo.nextRailIsNewRail))
+                    if (Raylib.IsMouseButtonDown(MouseButton.Left))
                     {
-                        if (!stationRepo.interactedStations.Contains(currentStation))
-                        {
-                            stationRepo.interactedStations.Add(currentStation);
-                            int listAmount = stationRepo.interactedStations.Count();
+                        railRepo.TryAddRail(currentStation);
+                        railRepo.nextRailIsNewRail = false;
 
-                            if (listAmount > 1)
-                            {
-                                railRepo.AddRail(currentStation, stationRepo.lastInteractedStation);
-                                railRepo.nextRailIsNewRail = false;
-                            }     
-                            
-                            stationRepo.lastInteractedStation = currentStation;
-                        }
-                    }
-                    else
-                    {
-                        Raylib.DrawCircle(currentStation.StationPlacement.X, currentStation.StationPlacement.Y, 13, Color.SkyBlue);
+                        stationRepo.lastInteractedStation = currentStation;
+                        stationRepo.interactedStations.Add(currentStation);
                     }
                 }
                 else if (!Raylib.IsMouseButtonDown(MouseButton.Left))
                 {  
-
+                    railRepo.nextRailIsNewRail = true;
                     stationRepo.lastInteractedStation = null;
                     stationRepo.interactedStations.Clear();
-                    railRepo.nextRailIsNewRail = true;
                 }
                 
                 if (stationRepo.interactedStations.Contains(currentStation))
@@ -104,9 +91,12 @@ public class Draw
 
                 foreach (RailLine railLine in railRepo.RailLineList)
                 {
-                    foreach(Rail rail in railLine.Rails)
+                    if(railLine.IsActive && railLine.Stations.Count > 1)
                     {
-                        Raylib.DrawLineEx(rail.Destination1.StationPlacement.Position, rail.Destination2.StationPlacement.Position, 15.0f, railLine.Color);
+                        for (int i = 0; i < railLine.Stations.Count - 1; i++)
+                        {
+                            Raylib.DrawLineEx(railLine.Stations[i].StationPlacement.Position, railLine.Stations[i + 1].StationPlacement.Position, 15.0f, railLine.Color);
+                        }
                     }
                 }
 
@@ -121,6 +111,7 @@ public class Draw
         Raylib.CloseWindow();
     }    
 }
+
 
 /*
 int RectangleWidth = currentStation.StationPlacement.InteractXCoverArea2 - currentStation.StationPlacement.InteractXCoverArea1;
