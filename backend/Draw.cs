@@ -66,12 +66,16 @@ public class Draw
                     if (addRailSucces)
                     {
                         stationRepo.interactedStations.Add(currentStation);
+                        railRepo.nextRailIsNewRail = false;
                     }
-
-                    railRepo.nextRailIsNewRail = false;
                 }
                 else if (!Raylib.IsMouseButtonDown(MouseButton.Left))
                 {  
+                    if (railRepo.currentRailLine.Stations.Count < 2 && stationRepo.interactedStations.Count < 2)
+                    {
+                        railRepo.currentRailLine.Stations.Clear();
+                    }
+
                     stationRepo.interactedStations.Clear();
                     railRepo.nextRailIsNewRail = true;
                     railRepo.forcedStopDrawing = false;

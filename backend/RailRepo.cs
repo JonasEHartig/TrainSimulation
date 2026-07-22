@@ -44,13 +44,16 @@ public class RailRepo
                     currentRailLine.Stations.Add(currentStation);
                     forcedStopDrawing = true;
                 }
+                else
+                {
+                    return false;
+                }
 
                 if (currentRailLine.IsLoop)
                 {
                     forcedStopDrawing = true;
                 }
             }
-
             return true;
         }
         else
