@@ -6,7 +6,6 @@ public class StationRepo
 {
     public List<Station> StationList = new List<Station>();
     public List<Station> interactedStations = new List<Station>();
-    public Station lastInteractedStation = null;
 
     public bool mapFull { get; private set; }= false;
     private readonly Random rng = new();

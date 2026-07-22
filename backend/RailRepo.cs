@@ -1,7 +1,6 @@
 using Raylib_cs;
 using System.Diagnostics.Metrics;
 using System.Numerics;
-using System.Security.Cryptography.X509Certificates;
 
 namespace challenge;
 
@@ -10,35 +9,53 @@ public class RailRepo
     public List<RailLine> RailLineList = new List<RailLine>();
 
     public RailLine? currentRailLine = null;
-    public bool canDrawRails = true;
+    public bool newRailsAvalible = true;
     public bool nextRailIsNewRail = true;
+    public bool forcedStopDrawing = false;
+
     
-    public void TryAddRail(Station currentStation)
+    public bool TryAddRail(Station currentStation)
     {
-        if (nextRailIsNewRail) 
+        if ((newRailsAvalible || !nextRailIsNewRail) && !forcedStopDrawing)
         {
-            foreach (RailLine railLine in RailLineList)
+            if (nextRailIsNewRail) 
             {
-                if (!railLine.IsActive)
+                foreach (RailLine railLine in RailLineList)
                 {
-                    canDrawRails = true;
-                    currentRailLine = railLine;
-                    break;
+                    if (!railLine.IsActive)
+                    {
+                        currentRailLine = railLine;
+                        break;
+                    }
+                }
+
+                currentRailLine.Stations.Add(currentStation);
+
+                newRailsAvalible = RailLineList.Any(r => !r.IsActive);
+            }
+            else
+            {
+                if (!currentRailLine.Stations.Contains(currentStation))
+                {
+                    currentRailLine.Stations.Add(currentStation);
+                }
+                else if (currentStation == currentRailLine.Stations[0] && currentRailLine.Stations.Count > 2)
+                {
+                    currentRailLine.Stations.Add(currentStation);
+                    forcedStopDrawing = true;
+                }
+
+                if (currentRailLine.IsLoop)
+                {
+                    forcedStopDrawing = true;
                 }
             }
 
-            
-            currentRailLine.Stations.Add(currentStation);
-
-            canDrawRails = RailLineList.Any(r => !r.IsActive);
+            return true;
         }
         else
         {
-            if (currentRailLine.Stations.Contains(currentStation))
-            {
-                return;
-            }
-            currentRailLine.Stations.Add(currentStation);
+            return false;
         }
     }
 
@@ -55,15 +72,4 @@ public class RailRepo
 
         currentRailLine = railLineRed;
     }
-
-    public bool IsStationStartPointOfCurrentRailLine(Station currentStation)
-    {
-        if (currentStation == currentRailLine.StartPointStation)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
 }
