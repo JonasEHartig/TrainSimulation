@@ -122,7 +122,7 @@ public class StationRepo
         return Tuple.Create((StationName?)stationNameEnum, stationNameValid);
     }
 
-    public bool CollisionCheck(Station currentStation, Vector2 mousePosition)
+    public bool StationCollisionCheck(Station currentStation, Vector2 mousePosition)
     {
         if (mousePosition.X >= currentStation.StationPlacement.InteractXCoverArea1 &&
             mousePosition.X <= currentStation.StationPlacement.InteractXCoverArea2 && 

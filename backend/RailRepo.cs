@@ -71,15 +71,30 @@ public class RailRepo
 
     public void CreateRailLines()
     {
-        RailLine railLineRed = new RailLine(new List<Station>(), RailColor.Red, Color.Red, new Color(92, 16, 22, 255), 30, 90, 14);
+        RailLine railLineRed = new RailLine(new List<Station>(), RailColor.Red, Color.Red, new Color(92, 16, 22, 255), 30, 90, 14, 20, 40, 80, 100);
         RailLineList.Add(railLineRed);
-        RailLine railLineGreen = new RailLine(new List<Station>(), RailColor.Green, Color.Green, new Color(0, 91, 19, 255), 65, 90, 14);
+        RailLine railLineGreen = new RailLine(new List<Station>(), RailColor.Green, Color.Green, new Color(0, 91, 19, 255), 65, 90, 14, 55, 75, 80, 100);
         RailLineList.Add(railLineGreen);
-        RailLine railLineYellow = new RailLine(new List<Station>(), RailColor.Yellow, Color.Yellow, new Color(101, 100, 0, 255), 100, 90, 14);
+        RailLine railLineYellow = new RailLine(new List<Station>(), RailColor.Yellow, Color.Yellow, new Color(101, 100, 0, 255), 100, 90, 14, 90, 110, 80, 100);
         RailLineList.Add(railLineYellow);
-        RailLine railLineBlue = new RailLine(new List<Station>(), RailColor.Blue, Color.Blue, new Color(0, 48, 96, 255), 135, 90, 14);
+        RailLine railLineBlue = new RailLine(new List<Station>(), RailColor.Blue, Color.Blue, new Color(0, 48, 96, 255), 135, 90, 14, 125, 145, 80, 100);
         RailLineList.Add(railLineBlue);
 
         currentRailLine = railLineRed;
+    }
+
+    public bool RailCircleCollisionCheck(RailLine currentRailLine, Vector2 mousePosition)
+    {
+        if (mousePosition.X >= currentRailLine.InteractXCoverArea1 &&
+            mousePosition.X <= currentRailLine.InteractXCoverArea2 && 
+            mousePosition.Y >= currentRailLine.InteractYCoverArea1 && 
+            mousePosition.Y <= currentRailLine.InteractYCoverArea2)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

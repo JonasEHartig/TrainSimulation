@@ -25,20 +25,33 @@ public class Draw
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Color.Black);
             Raylib.DrawText("Train Simulation", 12, 12, 20, Color.White);
+            Vector2 mousePosition = Raylib.GetMousePosition();
 
             foreach (RailLine currentRailLine in railRepo.RailLineList)
             {
                 if (currentRailLine.IsActive)
                 {
-                    Raylib.DrawCircle(currentRailLine.CircleX, currentRailLine.CircleY, currentRailLine.CircleRadius, currentRailLine.Color);
+                    if (railRepo.RailCircleCollisionCheck(currentRailLine, mousePosition))
+                    {
+                        Raylib.DrawCircle(currentRailLine.CircleX, currentRailLine.CircleY, currentRailLine.CircleRadius + 3, currentRailLine.Color);
+                    }
+                    else
+                    {
+                        Raylib.DrawCircle(currentRailLine.CircleX, currentRailLine.CircleY, currentRailLine.CircleRadius, currentRailLine.Color);
+                    }
                 }
                 else
                 {
-                    Raylib.DrawCircle(currentRailLine.CircleX, currentRailLine.CircleY, currentRailLine.CircleRadius, currentRailLine.DimmedColor);
+                    if (railRepo.RailCircleCollisionCheck(currentRailLine, mousePosition))
+                    {
+                        Raylib.DrawCircle(currentRailLine.CircleX, currentRailLine.CircleY, currentRailLine.CircleRadius + 3, currentRailLine.DimmedColor);
+                    }
+                    else
+                    {
+                        Raylib.DrawCircle(currentRailLine.CircleX, currentRailLine.CircleY, currentRailLine.CircleRadius, currentRailLine.DimmedColor);
+                    }
                 }
             }
-            
-            Vector2 mousePosition = Raylib.GetMousePosition();
     
             if (!stationRepo.mapFull)
             {
@@ -71,7 +84,7 @@ public class Draw
 
             foreach (Station currentStation in stationRepo.StationList)
             {
-                if (Raylib.IsMouseButtonDown(MouseButton.Left) && stationRepo.CollisionCheck(currentStation, mousePosition)) 
+                if (Raylib.IsMouseButtonDown(MouseButton.Left) && stationRepo.StationCollisionCheck(currentStation, mousePosition)) 
                 {
                     railRepo.TryAddRail(currentStation);
                 }
