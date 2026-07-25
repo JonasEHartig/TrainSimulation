@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "Qx9lOlY+LY4=",
+  "success": true,
+  "projectFilePath": "C:\\Repos\\Visual Studio\\TrainSimulation\\challenge.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\jonas\\.nuget\\packages\\raylib-cs\\8.0.0\\raylib-cs.8.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

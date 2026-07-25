@@ -14,20 +14,13 @@ public class RailRepo
     public bool forcedStopDrawing = false;
 
     
-    public bool TryAddRail(Station currentStation)
+    public void TryAddRail(Station currentStation)
     {
         if ((newRailsAvalible || !nextRailIsNewRail) && !forcedStopDrawing)
         {
             if (nextRailIsNewRail) 
             {
-                foreach (RailLine railLine in RailLineList)
-                {
-                    if (!railLine.IsActive)
-                    {
-                        currentRailLine = railLine;
-                        break;
-                    }
-                }
+                currentRailLine = RailLineList.FirstOrDefault(r => !r.IsActive);
 
                 currentRailLine.Stations.Add(currentStation);
 
@@ -46,7 +39,7 @@ public class RailRepo
                 }
                 else
                 {
-                    return false;
+                    return;
                 }
 
                 if (currentRailLine.IsLoop)
@@ -54,23 +47,37 @@ public class RailRepo
                     forcedStopDrawing = true;
                 }
             }
-            return true;
+
+            nextRailIsNewRail = false;
+            return;
         }
         else
         {
-            return false;
+            return;
         }
+    }
+
+    public void EndDrag()
+    {
+        if (currentRailLine != null && currentRailLine.Stations.Count < 2)
+        {
+            currentRailLine.Stations.Clear();
+        }
+
+        nextRailIsNewRail = true;
+        forcedStopDrawing = false;
+        currentRailLine = null;
     }
 
     public void CreateRailLines()
     {
-        RailLine railLineRed = new RailLine(new List<Station>(), RailColor.Red, Color.Red);
+        RailLine railLineRed = new RailLine(new List<Station>(), RailColor.Red, Color.Red, new Color(92, 16, 22, 255), 30, 90, 14);
         RailLineList.Add(railLineRed);
-        RailLine railLineGreen = new RailLine(new List<Station>(), RailColor.Green, Color.Green);
+        RailLine railLineGreen = new RailLine(new List<Station>(), RailColor.Green, Color.Green, new Color(0, 91, 19, 255), 65, 90, 14);
         RailLineList.Add(railLineGreen);
-        RailLine railLineYellow = new RailLine(new List<Station>(), RailColor.Yellow, Color.Yellow);
+        RailLine railLineYellow = new RailLine(new List<Station>(), RailColor.Yellow, Color.Yellow, new Color(101, 100, 0, 255), 100, 90, 14);
         RailLineList.Add(railLineYellow);
-        RailLine railLineBlue = new RailLine(new List<Station>(), RailColor.Blue, Color.Blue);
+        RailLine railLineBlue = new RailLine(new List<Station>(), RailColor.Blue, Color.Blue, new Color(0, 48, 96, 255), 135, 90, 14);
         RailLineList.Add(railLineBlue);
 
         currentRailLine = railLineRed;

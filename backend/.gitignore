@@ -1,0 +1,13 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio files
+.vs/
+*.user
+*.suo
+
+# Build artifacts (in case they land outside bin/obj)
+*.dll
+*.exe
+*.pdb
