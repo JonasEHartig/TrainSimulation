@@ -99,7 +99,7 @@ public class Draw
                     if (currentStation == railRepo.currentRailLine.Stations[^1])
                     {
                         Raylib.DrawCircle(currentStation.StationPlacement.X, currentStation.StationPlacement.Y, 14, Color.Green);
-                        Raylib.DrawLineEx(currentStation.StationPlacement.Position, mousePosition, 20.0f, Color.Gray);
+                        Raylib.DrawLineEx(currentStation.StationPlacement.Position, mousePosition, 20.0f, railRepo.currentRailLine.DimmedColor);
                     }
                 }
 
