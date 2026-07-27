@@ -1,8 +1,6 @@
-using System;
-using System.Numerics;
-using System.Security.Cryptography.X509Certificates;
-using System.Timers;
 using Raylib_cs;
+using System.Numerics;
+
 namespace challenge;
 
 public class Draw
@@ -32,8 +30,13 @@ public class Draw
                 if (currentRailLine.IsActive)
                 {
                     if (railRepo.RailCircleCollisionCheck(currentRailLine, mousePosition))
-                    {
+                    {   
                         Raylib.DrawCircle(currentRailLine.CircleX, currentRailLine.CircleY, currentRailLine.CircleRadius + 3, currentRailLine.Color);
+
+                        if (Raylib.IsMouseButtonPressed(MouseButton.Left))
+                        {
+                            railRepo.DeleteRailline(currentRailLine);
+                        }
                     }
                     else
                     {
@@ -66,7 +69,7 @@ public class Draw
                 Raylib.DrawText("Map is full", 12, 34, 20, Color.White);
             }
 
-            if (!railRepo.newRailsAvalible && railRepo.nextRailIsNewRail)
+            if (!railRepo.newRailsAvailable && railRepo.nextRailIsNewRail)
             {
                 Raylib.DrawText("Out of rails!", 12, 54, 20, Color.White);
             }
@@ -99,7 +102,6 @@ public class Draw
                         Raylib.DrawLineEx(currentStation.StationPlacement.Position, mousePosition, 20.0f, Color.Gray);
                     }
                 }
-
 
                 Raylib.DrawCircle(currentStation.StationPlacement.X, currentStation.StationPlacement.Y, 10, Color.Blue);
                 string stationName = currentStation.Name.ToString();

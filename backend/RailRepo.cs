@@ -9,22 +9,19 @@ public class RailRepo
     public List<RailLine> RailLineList = new List<RailLine>();
 
     public RailLine? currentRailLine = null;
-    public bool newRailsAvalible = true;
+    public bool newRailsAvailable => RailLineList.Any(r => !r.IsActive);    
     public bool nextRailIsNewRail = true;
     public bool forcedStopDrawing = false;
-
     
     public void TryAddRail(Station currentStation)
     {
-        if ((newRailsAvalible || !nextRailIsNewRail) && !forcedStopDrawing)
+        if ((newRailsAvailable || !nextRailIsNewRail) && !forcedStopDrawing)
         {
             if (nextRailIsNewRail) 
             {
                 currentRailLine = RailLineList.FirstOrDefault(r => !r.IsActive);
 
                 currentRailLine.Stations.Add(currentStation);
-
-                newRailsAvalible = RailLineList.Any(r => !r.IsActive);
             }
             else
             {
@@ -55,6 +52,11 @@ public class RailRepo
         {
             return;
         }
+    }
+
+    public void DeleteRailline(RailLine railLine)
+    {
+        railLine.Stations.Clear();
     }
 
     public void EndDrag()
