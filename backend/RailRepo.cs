@@ -54,7 +54,7 @@ public class RailRepo
         }
     }
 
-    public void DeleteRailline(RailLine railLine)
+    public void ResetRaillineStations(RailLine railLine)
     {
         railLine.Stations.Clear();
     }
@@ -87,10 +87,13 @@ public class RailRepo
 
     public bool RailCircleCollisionCheck(RailLine currentRailLine, Vector2 mousePosition)
     {
-        if (mousePosition.X >= currentRailLine.InteractXCoverArea1 &&
-            mousePosition.X <= currentRailLine.InteractXCoverArea2 && 
-            mousePosition.Y >= currentRailLine.InteractYCoverArea1 && 
-            mousePosition.Y <= currentRailLine.InteractYCoverArea2)
+        if 
+        (
+        mousePosition.X >= currentRailLine.InteractXCoverArea1 &&
+        mousePosition.X <= currentRailLine.InteractXCoverArea2 && 
+        mousePosition.Y >= currentRailLine.InteractYCoverArea1 && 
+        mousePosition.Y <= currentRailLine.InteractYCoverArea2
+        )
         {
             return true;
         }
@@ -98,5 +101,33 @@ public class RailRepo
         {
             return false;
         }
+    }
+
+    public int SplitRaillineVisual(Station station1, Station station2, RailLine railLine)
+    {
+
+        foreach(RailLine currentRailLine in RailLineList)
+        {
+            bool station1Match = false;
+
+            if (railLine != currentRailLine)
+            {
+                foreach(Station station in railLine.Stations)
+                {
+                    if (station1 == station)
+                    {
+                        station1Match = true;
+                    }
+
+                    if (station1Match == true && station2 == station)
+                    {
+                        return 1;
+                    }
+                }
+            }
+
+        }
+
+        return 0;
     }
 }

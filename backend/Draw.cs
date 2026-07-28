@@ -35,7 +35,7 @@ public class Draw
 
                         if (Raylib.IsMouseButtonPressed(MouseButton.Left))
                         {
-                            railRepo.DeleteRailline(currentRailLine);
+                            railRepo.ResetRaillineStations(currentRailLine);
                         }
                     }
                     else
@@ -80,7 +80,15 @@ public class Draw
                 {
                     for (int i = 0; i < railLine.Stations.Count - 1; i++)
                     {
-                        Raylib.DrawLineEx(railLine.Stations[i].StationPlacement.Position, railLine.Stations[i + 1].StationPlacement.Position, 15.0f, railLine.Color);
+                        int splitTime = railRepo.SplitRaillineVisual(railLine.Stations[i], railLine.Stations[i + 1], railLine);
+                        if (splitTime == 1)
+                        {
+                            Raylib.DrawLineEx(railLine.Stations[i].StationPlacement.Position + new Vector2(10,0), railLine.Stations[i + 1].StationPlacement.Position + new Vector2(10,0), 15.0f, railLine.Color);
+                        }
+                        else
+                        {
+                            Raylib.DrawLineEx(railLine.Stations[i].StationPlacement.Position, railLine.Stations[i + 1].StationPlacement.Position, 15.0f, railLine.Color);
+                        }
                     }
                 }
             }
