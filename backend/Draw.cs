@@ -81,9 +81,14 @@ public class Draw
                     for (int i = 0; i < railLine.Stations.Count - 1; i++)
                     {
                         int splitTime = railRepo.SplitRaillineVisual(railLine.Stations[i], railLine.Stations[i + 1], railLine);
+
+                        Station s1 = railLine.Stations[i];
+                        Station s2 = railLine.Stations[i + 1];
+                        Vector2 off = railLine.OffsetFor(s1, s2);
+
                         if (splitTime == 1)
                         {
-                            Raylib.DrawLineEx(railLine.Stations[i].StationPlacement.Position + new Vector2(10,0), railLine.Stations[i + 1].StationPlacement.Position + new Vector2(10,0), 15.0f, railLine.Color);
+                            Raylib.DrawLineEx(railLine.Stations[i].StationPlacement.Position + off, railLine.Stations[i + 1].StationPlacement.Position + off, 10.0f, railLine.Color);
                         }
                         else
                         {

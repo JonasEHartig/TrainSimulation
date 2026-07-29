@@ -73,13 +73,13 @@ public class RailRepo
 
     public void CreateRailLines()
     {
-        RailLine railLineRed = new RailLine(new List<Station>(), RailColor.Red, Color.Red, new Color(92, 16, 22, 255), 30, 90, 14, 20, 40, 80, 100);
+        RailLine railLineRed = new RailLine(new List<Station>(), RailColor.Red, Color.Red, new Color(92, 16, 22, 255), 30, 90, 14, 20, 40, 80, 100, 5);
         RailLineList.Add(railLineRed);
-        RailLine railLineGreen = new RailLine(new List<Station>(), RailColor.Green, Color.Green, new Color(0, 91, 19, 255), 65, 90, 14, 55, 75, 80, 100);
+        RailLine railLineGreen = new RailLine(new List<Station>(), RailColor.Green, Color.Green, new Color(0, 91, 19, 255), 65, 90, 14, 55, 75, 80, 100, -5);
         RailLineList.Add(railLineGreen);
-        RailLine railLineYellow = new RailLine(new List<Station>(), RailColor.Yellow, Color.Yellow, new Color(101, 100, 0, 255), 100, 90, 14, 90, 110, 80, 100);
+        RailLine railLineYellow = new RailLine(new List<Station>(), RailColor.Yellow, Color.Yellow, new Color(101, 100, 0, 255), 100, 90, 14, 90, 110, 80, 100, 15);
         RailLineList.Add(railLineYellow);
-        RailLine railLineBlue = new RailLine(new List<Station>(), RailColor.Blue, Color.Blue, new Color(0, 48, 96, 255), 135, 90, 14, 125, 145, 80, 100);
+        RailLine railLineBlue = new RailLine(new List<Station>(), RailColor.Blue, Color.Blue, new Color(0, 48, 96, 255), 135, 90, 14, 125, 145, 80, 100, -15);
         RailLineList.Add(railLineBlue);
 
         currentRailLine = railLineRed;
@@ -105,27 +105,25 @@ public class RailRepo
 
     public int SplitRaillineVisual(Station station1, Station station2, RailLine railLine)
     {
-
         foreach(RailLine currentRailLine in RailLineList)
         {
             bool station1Match = false;
 
-            if (railLine != currentRailLine)
+            if (currentRailLine != railLine)
             {
-                foreach(Station station in railLine.Stations)
+                foreach(Station station in currentRailLine.Stations)
                 {
-                    if (station1 == station)
+                    if (station == station1)
                     {
                         station1Match = true;
                     }
 
-                    if (station1Match == true && station2 == station)
+                    if (station1Match == true && station == station2)
                     {
                         return 1;
                     }
                 }
             }
-
         }
 
         return 0;
